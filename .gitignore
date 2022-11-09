@@ -1,0 +1,5 @@
+*.hi
+*.o
+PlayFair/playFair
+*.out
+Cesar/translatekey

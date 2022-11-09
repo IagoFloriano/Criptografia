@@ -1,0 +1,32 @@
+Palavra chave: Palavra -> palvr
+
+P A L V R
+B C D E F
+G H i K M
+N O Q S T
+U W X Y Z
+
+Texto Claro:
+
+UM TEXTO CLARO PRA ARQUIVAR
+
+um = zg
+te = sf
+xt = zq
+oc = wh
+la = vl
+ro = at
+pr = ap
+ax = lw
+ar = lp
+qu = nx
+iv = kl
+ar = lp
+
+Texto cifrado:
+
+ZGSFZQWHVLATAPLWLPNXKLLP
+
+Descifrado:
+
+UMTEXTOCLAROPRAXARQUIVAR
