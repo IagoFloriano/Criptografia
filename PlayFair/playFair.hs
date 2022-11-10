@@ -1,4 +1,4 @@
-import Data.Char (chr, ord)
+import Data.Char (chr, ord, toUpper)
 
 type Table = [[Char]]
 
@@ -8,15 +8,9 @@ contains a (x:xs)
   | x == a = True
   | otherwise = contains a xs
 
-remove :: Eq a => a -> [a] -> [a]
-remove _ [] = []
-remove a (x:xs)
-  | a == x = remove a xs
-  | otherwise = x : remove a xs
-
 unique :: Eq a => [a] -> [a]
 unique [] = []
-unique (x:xs) = x : unique (remove x xs)
+unique (x:xs) = x : unique (filter (/= x) xs)
 
 addalphabet :: Char -> String -> String
 addalphabet 'I' str = addalphabet 'J' str
@@ -81,7 +75,8 @@ makeTable key = vetToMat 5 5 (addalphabet 'A' $ iToJ keynodupe)
 
 criptografa :: String -> String -> String
 criptografa _ [] = []
-criptografa k str = substitui (makeTable k) $ toPairs $ remove ' ' $ iToJ str
+criptografa k str =
+  substitui (makeTable k) $ toPairs $ filter (/= ' ') $ iToJ str
 
 makeDeTable :: String -> Table
 makeDeTable key = vetToMat 5 5 (reverse $ addalphabet 'A' $ iToJ keynodupe)
@@ -91,7 +86,7 @@ makeDeTable key = vetToMat 5 5 (reverse $ addalphabet 'A' $ iToJ keynodupe)
 descriptografa :: String -> String -> String
 descriptografa _ [] = []
 descriptografa k str =
-  substitui (makeDeTable k) $ toPairs $ remove ' ' $ iToJ str
+  substitui (makeDeTable k) $ toPairs $ filter (/= ' ') $ iToJ str
 
 doChosen :: [String] -> String
 doChosen (a:k:str)
@@ -100,4 +95,4 @@ doChosen (a:k:str)
   | otherwise = criptografa k (unwords str)
 
 main :: IO ()
-main = interact $ doChosen . words
+main = interact $ doChosen . words . map toUpper
