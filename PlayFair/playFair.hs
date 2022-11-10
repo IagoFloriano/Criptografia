@@ -1,25 +1,20 @@
-import Data.Char (chr, ord, toUpper)
+import qualified Data.Char as C
+import qualified Data.Map as M
 
 type Table = [[Char]]
 
-contains :: Eq a => a -> [a] -> Bool
-contains _ [] = False
-contains a (x:xs)
-  | x == a = True
-  | otherwise = contains a xs
+type ChCords = M.Map Char (Int, Int)
+
+tableToList :: Table -> Int -> [(Char, (Int, Int))]
+tableToList t 5 = []
+tableToList t l = zip (t !! l) [(l, i) | i <- [0 ..]] ++ tableToList t (l + 1)
+
+makeCords :: Table -> ChCords
+makeCords t = M.fromList $ tableToList t 0
 
 unique :: Eq a => [a] -> [a]
 unique [] = []
 unique (x:xs) = x : unique (filter (/= x) xs)
-
-addalphabet :: Char -> String -> String
-addalphabet 'I' str = addalphabet 'J' str
-addalphabet c str
-  | length str == 25 = str
-  | contains c str = addalphabet nextc str
-  | otherwise = addalphabet nextc $ str ++ [c]
-  where
-    nextc = chr (ord c + 1)
 
 vetToMat :: Int -> Int -> [b] -> [[b]]
 vetToMat 0 _ _ = []
@@ -38,55 +33,44 @@ toPairs (x:y:xs)
   | otherwise = [x : "X"] ++ toPairs (y : xs)
 toPairs (x:[]) = [x : "X"]
 
-subs1 :: Table -> String -> String
-subs1 t (x:y:[])
-  | linx > 5 || liny > 5 = x : y : []
-  | linx == liny =
-    (t !! linx) !! (mod (colx + 1) 5) : [(t !! liny) !! (mod (coly + 1) 5)]
-  | colx == coly =
-    (t !! (mod (linx + 1) 5)) !! colx : [(t !! (mod (liny + 1) 5)) !! coly]
+subs1 :: Table -> ChCords -> String -> String
+subs1 t cc (x:y:[])
+  | not (C.isAlpha x && C.isAlpha y) || linx > 5 || liny > 5 = x : y : []
+  | linx == liny = rightx : [righty]
+  | colx == coly = underx : [undery]
   | otherwise = (t !! linx) !! coly : [(t !! liny) !! colx]
   where
-    linx = getLin t x 0
-    liny = getLin t y 0
-    colx = getCol (t !! linx) x 0
-    coly = getCol (t !! liny) y 0
+    rightx = (t !! linx) !! (mod (colx + 1) 5)
+    righty = (t !! liny) !! (mod (coly + 1) 5)
+    underx = (t !! (mod (linx + 1) 5)) !! colx
+    undery = (t !! (mod (liny + 1) 5)) !! coly
+    (linx, colx) = cc M.! x
+    (liny, coly) = cc M.! y
 
-getLin :: Table -> Char -> Int -> Int
-getLin t c 5 = 6
-getLin t c n
-  | contains c (t !! n) = n
-  | otherwise = getLin t c (n + 1)
-
-getCol :: String -> Char -> Int -> Int
-getCol [] _ _ = error "NAO TEM"
-getCol (t:ts) c n
-  | t == c = n
-  | otherwise = getCol ts c (n + 1)
-
-substitui :: Table -> [String] -> String
-substitui _ [] = []
-substitui t (x:xs) = subs1 t x ++ substitui t xs
+substitui :: Table -> ChCords -> [String] -> String
+substitui _ cc [] = []
+substitui t cc (x:xs) = subs1 t cc x ++ substitui t cc xs
 
 makeTable :: String -> Table
-makeTable key = vetToMat 5 5 (addalphabet 'A' $ iToJ keynodupe)
-  where
-    keynodupe = unique key
+makeTable key =
+  vetToMat 5 5 $ unique $ iToJ (unique key) ++ ['A' .. 'H'] ++ ['J' .. 'Z']
 
 criptografa :: String -> String -> String
 criptografa _ [] = []
 criptografa k str =
-  substitui (makeTable k) $ toPairs $ filter (/= ' ') $ iToJ str
+  substitui (makeTable k) (makeCords $ makeTable k) $
+  toPairs $ filter (/= ' ') $ iToJ str
 
 makeDeTable :: String -> Table
-makeDeTable key = vetToMat 5 5 (reverse $ addalphabet 'A' $ iToJ keynodupe)
-  where
-    keynodupe = unique key
+makeDeTable key =
+  vetToMat 5 5 $
+  reverse $ unique $ iToJ (unique key) ++ ['A' .. 'H'] ++ ['J' .. 'Z']
 
 descriptografa :: String -> String -> String
 descriptografa _ [] = []
 descriptografa k str =
-  substitui (makeDeTable k) $ toPairs $ filter (/= ' ') $ iToJ str
+  substitui (makeDeTable k) (makeCords $ makeDeTable k) $
+  toPairs $ filter (/= ' ') $ iToJ str
 
 doChosen :: [String] -> String
 doChosen (a:k:str)
@@ -95,4 +79,4 @@ doChosen (a:k:str)
   | otherwise = criptografa k (unwords str)
 
 main :: IO ()
-main = interact $ doChosen . words . map toUpper
+main = interact $ doChosen . words . map C.toUpper
