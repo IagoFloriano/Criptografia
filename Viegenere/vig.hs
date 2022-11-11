@@ -1,6 +1,7 @@
 import qualified Data.Char as C
 import qualified Data.List as L
 import qualified Data.Map as M
+import Data.Maybe (fromJust)
 
 type Table = [[Char]]
 
@@ -35,17 +36,16 @@ criptografa (k:ks) (x:xs)
     xo = C.ord x - C.ord 'A'
 
 findDes :: Char -> Char -> Table -> Int -> Int
-findDes k x t = undefined
+findDes k x t n
+  | fromJust (L.elemIndex x (t !! n)) == (C.ord k - C.ord 'A') = n + C.ord 'A'
+  | otherwise = findDes k x t (n + 1)
 
 descriptografa :: String -> String -> String
 descriptografa _ [] = []
 descriptografa [] _ = []
 descriptografa (k:ks) (x:xs)
-  | C.isLetter x = (makeTable !! ko) !! xo : descriptografa ks xs
+  | C.isLetter x = C.chr (findDes k x makeTable 0) : descriptografa ks xs
   | otherwise = x : descriptografa ks xs
-  where
-    ko = C.ord k - C.ord 'A'
-    xo = C.ord x - C.ord 'A'
 
 doChosen :: [String] -> String
 doChosen (a:k:str)
