@@ -20,7 +20,8 @@ makeCords t = M.fromList $ tableToList t 0
 
 tableString :: Int -> String
 tableString 26 = []
-tableString x = take 26 (drop x (cycle ['A' .. 'Z'])) ++ tableString (x + 1)
+tableString x =
+  take 26 (drop (26 - x) $ cycle ['A' .. 'Z']) ++ tableString (x + 1)
 
 makeTable :: Table
 makeTable = vetToMat 26 26 $ tableString 0
