@@ -1,4 +1,5 @@
 import qualified Data.Char as C
+import qualified Data.List as L
 import qualified Data.Map as M
 
 type Table = [[Char]]
@@ -11,10 +12,6 @@ tableToList t l = zip (t !! l) [(l, i) | i <- [0 ..]] ++ tableToList t (l + 1)
 
 makeCords :: Table -> ChCords
 makeCords t = M.fromList $ tableToList t 0
-
-unique :: Eq a => [a] -> [a]
-unique [] = []
-unique (x:xs) = x : unique (filter (/= x) xs)
 
 vetToMat :: Int -> Int -> [b] -> [[b]]
 vetToMat 0 _ _ = []
@@ -53,7 +50,7 @@ substitui t cc (x:xs) = subs1 t cc x ++ substitui t cc xs
 
 makeTable :: String -> Table
 makeTable key =
-  vetToMat 5 5 $ unique $ iToJ (unique key) ++ ['A' .. 'H'] ++ ['J' .. 'Z']
+  vetToMat 5 5 $ L.nub $ iToJ (L.nub key) ++ ['A' .. 'H'] ++ ['J' .. 'Z']
 
 criptografa :: String -> String -> String
 criptografa _ [] = []
@@ -64,7 +61,7 @@ criptografa k str =
 makeDeTable :: String -> Table
 makeDeTable key =
   vetToMat 5 5 $
-  reverse $ unique $ iToJ (unique key) ++ ['A' .. 'H'] ++ ['J' .. 'Z']
+  reverse $ L.nub $ iToJ (L.nub key) ++ ['A' .. 'H'] ++ ['J' .. 'Z']
 
 descriptografa :: String -> String -> String
 descriptografa _ [] = []
@@ -76,7 +73,7 @@ doChosen :: [String] -> String
 doChosen (a:k:str)
   | length (a : k : str) < 3 = ""
   | a == "DE" = descriptografa k (unwords str) ++ "\n"
-  | otherwise = criptografa k (unwords str)
+  | otherwise = criptografa k (unwords str) ++ "\n"
 
 main :: IO ()
 main = interact $ doChosen . words . map C.toUpper
