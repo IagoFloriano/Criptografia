@@ -20,8 +20,7 @@ makeCords t = M.fromList $ tableToList t 0
 
 tableString :: Int -> String
 tableString 26 = []
-tableString x =
-  take 26 (drop (26 - x) $ cycle ['A' .. 'Z']) ++ tableString (x + 1)
+tableString x = take 26 (drop x $ cycle ['A' .. 'Z']) ++ tableString (x + 1)
 
 makeTable :: Table
 makeTable = vetToMat 26 26 $ tableString 0
@@ -36,16 +35,16 @@ criptografa (k:ks) (x:xs)
     ko = C.ord k - C.ord 'A'
     xo = C.ord x - C.ord 'A'
 
-findDes :: Char -> Char -> Table -> Int -> Int
-findDes k x t n
-  | fromJust (L.elemIndex x (t !! n)) == (C.ord k - C.ord 'A') = n + C.ord 'A'
-  | otherwise = findDes k x t (n + 1)
+findDes :: Char -> Char -> Table -> Char
+findDes k x t = C.chr $ (fromJust (L.elemIndex x (t !! ko))) + C.ord 'A'
+  where
+    ko = C.ord k - C.ord 'A'
 
 descriptografa :: String -> String -> String
 descriptografa _ [] = []
 descriptografa [] _ = []
 descriptografa (k:ks) (x:xs)
-  | C.isLetter x = C.chr (findDes k x makeTable 0) : descriptografa ks xs
+  | C.isLetter x = (findDes k x makeTable) : descriptografa ks xs
   | otherwise = x : descriptografa ks xs
 
 doChosen :: [String] -> String
