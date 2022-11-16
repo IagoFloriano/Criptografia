@@ -6,12 +6,8 @@ fazTabela n str
   | length str < n = [take n $ str ++ cycle "X"]
   | otherwise = take n str : fazTabela n (drop n str)
 
-unMatrix :: [String] -> String
-unMatrix [] = []
-unMatrix (x:xs) = x ++ unMatrix xs
-
 criptografa :: Int -> String -> String
-criptografa k str = unMatrix $ L.transpose $ fazTabela k str
+criptografa k str = concat $ L.transpose $ fazTabela k str
 
 doChosen :: [String] -> String
 doChosen input
