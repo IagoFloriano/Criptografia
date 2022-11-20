@@ -30,7 +30,7 @@ criptografa _ [] = []
 criptografa [] _ = []
 criptografa (k:ks) (x:xs)
   | C.isLetter x = (makeTable !! ko) !! xo : criptografa ks xs
-  | otherwise = x : criptografa ks xs
+  | otherwise = x : criptografa (k : ks) xs
   where
     ko = C.ord k - C.ord 'A'
     xo = C.ord x - C.ord 'A'
@@ -45,7 +45,7 @@ descriptografa _ [] = []
 descriptografa [] _ = []
 descriptografa (k:ks) (x:xs)
   | C.isLetter x = (findDes k x makeTable) : descriptografa ks xs
-  | otherwise = x : descriptografa ks xs
+  | otherwise = x : descriptografa (k : ks) xs
 
 doChosen :: [String] -> String
 doChosen (a:k:str)
