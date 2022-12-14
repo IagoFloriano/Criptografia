@@ -11,7 +11,7 @@ descriptografa: ${LIBS} descriptografa.hs
 	${CC} $@ -i ${LIBS}
 
 clean:
-	rm *.hi *.o
+	$(RM) *.hi *.o
 
 purge: clean
-	rm ${TARGETS}
+	$(RM) ${TARGETS}
