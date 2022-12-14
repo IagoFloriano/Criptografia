@@ -60,7 +60,7 @@ playFair k str = pfsubstitui criptTable (makeCords $ criptTable) filteredStr
   where
     criptTable =
       makeTable k 5 5 $ L.nub $ iToJ (L.nub k) ++ ['A' .. 'H'] ++ ['J' .. 'Z']
-    filteredStr = toPairs $ filter (/= ' ') $ iToJ str
+    filteredStr = toPairs $ filter (C.isLetter) $ iToJ str
 
 --}
 --Viegenere Functions {
