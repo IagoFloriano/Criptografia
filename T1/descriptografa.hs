@@ -9,7 +9,9 @@ decript :: [String] -> String
 decript input
   | length input < 3 =
     "Entrada dada de forma incorreta\n deve ser: [chave play fair] [chave viegenere] [texto a ser descriptografado]"
-  | otherwise = PF.decript kpf $ V.decript kvg $ unwords str
+  | otherwise =
+    (PF.decript kpf $ V.decript kvg $ filter (not . C.isSpace) $ unwords str) ++
+    "\n"
   where
     (kpf:kvg:str) = input
 

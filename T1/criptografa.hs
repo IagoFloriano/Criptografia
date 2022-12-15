@@ -9,7 +9,7 @@ encript :: [String] -> String
 encript input
   | length input < 3 =
     "Entrada dada de forma incorreta\n deve ser: [chave play fair] [chave viegenere] [texto a ser criptografado]"
-  | otherwise = V.encript kvg $ PF.encript kpf $ unwords str
+  | otherwise = (V.encript kvg $ PF.encript kpf $ unwords str) ++ "\n"
   where
     (kpf:kvg:str) = input
 
