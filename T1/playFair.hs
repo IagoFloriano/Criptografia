@@ -18,8 +18,14 @@ toPairs :: String -> [String]
 toPairs [] = []
 toPairs (x:y:xs)
   | x /= y = [x : y : []] ++ toPairs xs
+  | x == 'X' && y == 'X' = [x : y : []] ++ toPairs xs
   | otherwise = [x : "X"] ++ toPairs (y : xs)
 toPairs (x:[]) = [x : "X"]
+
+deToPairs :: String -> [String]
+deToPairs [] = []
+deToPairs (x:[]) = error "Entrada não foi gerada por esse algoritmo"
+deToPairs (x:y:xs) = [x : y : []] ++ deToPairs xs
 
 subs1 :: U.Table -> U.ChCords -> String -> Int -> String
 subs1 t cc (x:y:[]) d
@@ -59,4 +65,4 @@ decript k str = substitui deCriptTable (U.makeCords deCriptTable) filteredStr 0
     deCriptTable =
       U.makeTable k 6 6 $
       reverse $ L.nub $ L.nub k ++ ['A' .. 'Z'] ++ ['0' .. '9']
-    filteredStr = toPairs $ filter (C.isAlphaNum) str
+    filteredStr = deToPairs $ filter (C.isAlphaNum) str
