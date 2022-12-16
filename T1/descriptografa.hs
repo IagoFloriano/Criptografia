@@ -16,4 +16,4 @@ decript input
     (kpf:kvg:str) = input
 
 main :: IO ()
-main = interact $ decript . words . map C.toUpper
+main = interact $ decript . words . filter C.isAscii . map C.toUpper

@@ -14,4 +14,4 @@ encript input
     (kpf:kvg:str) = input
 
 main :: IO ()
-main = interact $ encript . words . map C.toUpper
+main = interact $ encript . words . filter C.isAscii . map C.toUpper
