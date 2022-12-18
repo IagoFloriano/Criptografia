@@ -18,40 +18,51 @@ toPairs :: String -> [String]
 toPairs [] = []
 toPairs (x:y:xs)
   | x /= y = [x : y : []] ++ toPairs xs
+  | x == 'X' && y == 'X' = [x : y : []] ++ toPairs xs
   | otherwise = [x : "X"] ++ toPairs (y : xs)
 toPairs (x:[]) = [x : "X"]
 
-subs1 :: U.Table -> U.ChCords -> String -> String
-subs1 t cc (x:y:[])
-  | not (C.isAlpha x && C.isAlpha y) || linx > 5 || liny > 5 = x : y : []
+deToPairs :: String -> [String]
+deToPairs [] = []
+deToPairs (x:[]) = error "Entrada não foi gerada por esse algoritmo"
+deToPairs (x:y:xs) = [x : y : []] ++ deToPairs xs
+
+subs1 :: U.Table -> U.ChCords -> String -> Int -> String
+subs1 t cc (x:y:[]) d
+  | not (C.isAlphaNum x && C.isAlphaNum y) || linx > 6 || liny > 6 = x : y : []
   | linx == liny = rightx : [righty]
   | colx == coly = underx : [undery]
-  | otherwise = (t !! linx) !! coly : [(t !! liny) !! colx]
+  | otherwise = (t !! newlinx) !! newcoly : [(t !! newliny) !! newcolx]
   where
-    rightx = (t !! linx) !! (mod (colx + 1) 5)
-    righty = (t !! liny) !! (mod (coly + 1) 5)
-    underx = (t !! (mod (linx + 1) 5)) !! colx
-    undery = (t !! (mod (liny + 1) 5)) !! coly
+    rightx = (t !! newlinx) !! (mod (newcolx + 1) 6)
+    righty = (t !! newliny) !! (mod (newcoly + 1) 6)
+    underx = (t !! (mod (newlinx + 1) 6)) !! newcolx
+    undery = (t !! (mod (newliny + 1) 6)) !! newcoly
+    newlinx = mod (linx + d) 6
+    newliny = mod (liny + d) 6
+    newcolx = mod (colx + d) 6
+    newcoly = mod (coly + d) 6
     (linx, colx) = cc M.! x
     (liny, coly) = cc M.! y
 
-substitui :: U.Table -> U.ChCords -> [String] -> String
-substitui _ cc [] = []
-substitui t cc (x:xs) = subs1 t cc x ++ substitui t cc xs
+substitui :: U.Table -> U.ChCords -> [String] -> Int -> String
+substitui _ cc [] _ = []
+substitui t cc (x:xs) desloc =
+  subs1 t cc x desloc ++ substitui t cc xs (mod (desloc + 1) 6)
 
 encript :: String -> String -> String
 encript _ [] = []
-encript k str = substitui criptTable (U.makeCords criptTable) filteredStr
+encript k str = substitui criptTable (U.makeCords criptTable) filteredStr 0
   where
     criptTable =
-      U.makeTable k 5 5 $ L.nub $ iToJ (L.nub k) ++ ['A' .. 'H'] ++ ['J' .. 'Z']
-    filteredStr = toPairs $ filter (C.isLetter) $ iToJ str
+      U.makeTable k 6 6 $ L.nub $ L.nub k ++ ['A' .. 'Z'] ++ ['0' .. '9']
+    filteredStr = toPairs $ filter (C.isAlphaNum) str
 
 decript :: String -> String -> String
 decript _ [] = []
-decript k str = substitui deCriptTable (U.makeCords deCriptTable) filteredStr
+decript k str = substitui deCriptTable (U.makeCords deCriptTable) filteredStr 0
   where
     deCriptTable =
-      U.makeTable k 5 5 $
-      reverse $ L.nub $ iToJ (L.nub k) ++ ['A' .. 'H'] ++ ['J' .. 'Z']
-    filteredStr = toPairs $ filter (C.isLetter) $ iToJ str
+      U.makeTable k 6 6 $
+      reverse $ L.nub $ L.nub k ++ ['A' .. 'Z'] ++ ['0' .. '9']
+    filteredStr = deToPairs $ filter (C.isAlphaNum) str
