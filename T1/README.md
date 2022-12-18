@@ -34,7 +34,7 @@ entrada.txt deve ser da seguinte forma:
 `[chpf] [chvi] [texto de entrada]`
 onde a chpf (chave do play fair) e chvi (chave do vigenère) não podem conter espaços ou '\n'
 já o texto de entrada deverá ser qualquer string desejada e deve ter seu ultimo caractere um EOF ou CTRL+D, sugerimos o uso de arquivos para entrada 
-(qualquer caractere que não é uma letra do padrão ASCII será deletado para ser feita a cifragem/decifragem)
+(qualquer caractere que não é uma letra ou número do padrão ASCII será deletado para ser feita a cifragem/decifragem)
 
 ## Exemplos:
 
