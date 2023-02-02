@@ -37,9 +37,11 @@ bool Data::recebeTexto(){
 }
 
 void Data::imprimeSaida(){
+	std::cerr << "\n";
 	for(long unsigned int i = 0; i < this->texto.size() ; i++)
 		std::cout << this->texto[i];
 	this->texto.clear();
+	std::cerr << "\n";
 }
 
 void Data::mergeSort() {
@@ -49,4 +51,8 @@ void Data::mergeSort() {
 
 void Data::reverseMergeSort(){
 	Mergesort::reverseMergeSort(this->texto,this->chave);
+}
+
+void Data::mergeShuffle(){
+	Mergesort::mergeShuffle(this->texto,0 ,this->texto.size() - 1);
 }

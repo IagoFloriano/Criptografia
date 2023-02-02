@@ -21,6 +21,7 @@ public:
 	void mergeSort();
 	void imprimeSaida();
 	void reverseMergeSort(); // O coraçao de todo problema é o reverse merge sort
+	void mergeShuffle();
 };
 
 
