@@ -10,8 +10,9 @@ Data::~Data(){
 
 void Data::gerarChave(std::string chave){
 	for (char c : chave) {
-    	for (int i = 7; i >= 0; --i) {
-      		this->chave.push_back((c >> i) & 1);
+    	for (int i = 7; i >= 0; i -=2) {
+			std::tuple<bool,bool> t = std::make_tuple((c >> i) & 1 , (c >> (i-1)) & 1);
+      		this->chave.push_back(t);
     	}
   	}
 	int i = 0;
@@ -45,7 +46,7 @@ void Data::imprimeSaida(){
 }
 
 void Data::mergeSort() {
-	std::vector<bool> chave_aux = this->chave;
+	std::vector<std::tuple<bool,bool>> chave_aux = this->chave;
 	Mergesort::mergeSort(this->texto,0,this->texto.size() - 1,chave_aux);
 }
 

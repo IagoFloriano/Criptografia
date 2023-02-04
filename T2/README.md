@@ -2,18 +2,22 @@
 
 ## o que temos ate agora 
 
-- um merge sort com origem duvidosa
+- um merge sort
 - um reversemergesort q funciona
+- um merge shuffle   
 
+- agora cada caractere  é atibuido a 4 letras ao  invez dos anteriores 8, isso aumenta a dificuldade 
+- que deus tenha piedade do desperdicio de memoria que estamos usando
 
 ## para executar 
 
 primeiramente compilar com make  
 
-- criptografar:
-./teste < nome do arquivo    
-(tbm tem a opcaode escrever ate o EOF)  
+- criptografar:   
+./teste -k <arquivo com a chave> < nome do arquivo a se criptografado   
+caso o arg -k nao seja dado, a primeira linha sera usada como chave ate o primeiro \n   
 - descriptografar:
-./teste (literalmente qqr coisa q pode ser usado como arg, atualmente ele so ve a quantidade de args) < texto para descriptografar  
-(ou ate EOT)  
+./teste -d -k  <arquivo com a chave> < texto para descriptografar    
+O -k segue as mesmas regras da criptografia   
 
+## falta o relatorio

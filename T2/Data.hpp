@@ -6,13 +6,14 @@
 #include <iostream>
 #include <array>
 #include "Mergesort.hpp"
+#include <tuple>
 
 class Data{
 private:
 	/* data */
 	std::vector<char> texto;
 	unsigned int tam_texto;
-	std::vector<bool> chave;
+	std::vector<std::tuple<bool,bool>> chave;
 public:
 	Data();
 	~Data();
