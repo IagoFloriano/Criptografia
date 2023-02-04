@@ -1,78 +1,54 @@
-#include <vector>
+
 #include <iostream>
+#include <string>
+#include <vector>
+#include <fstream>
+#include "Data.hpp"
 
-template <typename T>
-void merge(std::vector<T> &arr, int l, int m, int r, std::vector<int> &weights) {
-    int i, j, k;
-    int n1 = m - l + 1;
-    int n2 =  r - m;
-
-    std::vector<T> L, R;
-    std::vector<int> weightL, weightR;
-
-    for (i = 0; i < n1; i++) {
-        L.push_back(arr[l + i]);
-        weightL.push_back(weights[l + i]);
-    }
-    for (j = 0; j < n2; j++) {
-        R.push_back(arr[m + 1 + j]);
-        weightR.push_back(weights[m + 1 + j]);
-    }
-
-    i = 0;
-    j = 0;
-    k = l;
-    while (i < n1 && j < n2) {
-        if (weightL[i] >= weightR[j]) {
-            arr[k] = L[i];
-            weights[k] = weightL[i];
-            i++;
-        }
-        else {
-            arr[k] = R[j];
-            weights[k] = weightR[j];
-            j++;
-        }
-        k++;
-    }
-
-    while (i < n1) {
-        arr[k] = L[i];
-        weights[k] = weightL[i];
-        i++;
-        k++;
-    }
-
-    while (j < n2) {
-        arr[k] = R[j];
-        weights[k] = weightR[j];
-        j++;
-        k++;
-    }
-}
-
-template <typename T>
-void mergeSort(std::vector<T> &arr, int l, int r, std::vector<int> &weights) {
-    if (l < r) {
-        int m = l + (r - l) / 2;
-
-        mergeSort(arr, l, m, weights);
-        mergeSort(arr, m + 1, r, weights);
-
-        merge(arr, l, m, r, weights);
-    }
-}
-
-int main() {
-    std::vector<char> arr = {'P', 'a', 'l', 'a', 'v', 'r', 'a'};
-    std::vector<int> weights = {0, 0, 1, 0, 1, 1 , 0};
-
-    mergeSort(arr, 0, arr.size() - 1, weights);
-
-    for (int i = 0; i < arr.size(); i++){
-        std::cout << arr[i] << " ";
-    }
-    std::cout << '\n';
-
+int main(int argc, char *argv[]) {
+	bool descritografa = 0;
+	std::string senha;
+	for (int i = 1; i < argc; i++) {
+        std::string arg(argv[i]);
+        if (arg == "-d") {
+			descritografa = 1;
+        } else if (arg == "-k") {
+            std::ifstream arquivo(argv[i+1]);
+			std::getline(arquivo, senha);
+			arquivo.close();
+		}
+	}
+	if (senha.size() == 0){
+		std::getline(std::cin , senha);
+	}
+    Data dados; 
+	dados.gerarChave(senha);
+	
+	//criptografa
+	if (!descritografa){
+		while (dados.recebeTexto()){
+			dados.mergeSort(); //o merge sort usou 100% de seu poder,mas nao foi capaz de lidar com o reversemergesort usando 0% do seu 
+			dados.mergeShuffle();
+			dados.imprimeSaida();
+		}
+		//std::cerr << "=============================================\n";
+		dados.mergeSort();
+		//dados.mergeShuffle(); // por algum motivo (dados de tamanhos diferentes) da erro na string final entao eu desativei 
+		dados.imprimeSaida();
+	}
+	else{
+		// ironicamente o reverse merge sort tem complexidade O(N) fazendo com que teoricamente seja mais facil descriptografar algo do que critografar
+		// o merge shuffle ainda eh O(n*log n)
+		//descriptografa
+		while (dados.recebeTexto()){
+			dados.mergeShuffle();
+			dados.reverseMergeSort(); // O coraçao de todo problema é o reverse merge sort
+			dados.imprimeSaida();
+		}
+		//std::cerr <<"=============================================\n";
+		//dados.mergeShuffle();	// idem o que ta escrito na ida e mo preguiça de tentar consertar
+		dados.reverseMergeSort(); // O coraçao de todo problema é o reverse merge sort
+		dados.imprimeSaida();
+	}
     return 0;
 }
