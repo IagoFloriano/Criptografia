@@ -37,11 +37,11 @@ bool Data::recebeTexto(){
 }
 
 void Data::imprimeSaida(){
-	std::cerr << "\n";
+	//std::cerr << "\n";
 	for(long unsigned int i = 0; i < this->texto.size() ; i++)
 		std::cout << this->texto[i];
 	this->texto.clear();
-	std::cerr << "\n";
+	//std::cerr << "\n";
 }
 
 void Data::mergeSort() {

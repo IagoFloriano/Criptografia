@@ -114,18 +114,18 @@ void Mergesort::reverseMergeSort(std::vector<char> &arr,std::vector<bool> &weigh
 	for(long unsigned int  i = 0; i < arr.size(); i++){
 		corte += static_cast<int>(weights[i]);
 	}	
-	std::cout << "corte: "<< corte <<"\n";
+	//std::cerr << "corte: "<< corte <<"\n";
 	corte = arr.size() - corte;
 	std::vector<char> l(arr.begin(),arr.begin() + corte);
 	std::vector<char> r(arr.begin() + corte,arr.end());
 
-	for(long unsigned int i = 0; i < l.size() ; i++)
-		std::cout << l[i];
-	std::cout << "\n";
+	/*for(long unsigned int i = 0; i < l.size() ; i++)
+		std::cerr << l[i];
+	std::cerr << "\n-----------------------------\n";
 	for(long unsigned int i = 0; i < r.size() ; i++)
-		std::cout << r[i];
-	std::cout << "\n";	
-
+		std::cerr << r[i];
+	std::cerr << "\n";
+*/
 	int l_count = 0;
 	int r_count = 0;
 	for(long unsigned int i = 0; i < arr.size(); i++){

@@ -2,16 +2,25 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
 #include "Data.hpp"
 
 int main(int argc, char *argv[]) {
-	std::string senha{"senha intermediaria que pode ter ate 256 caracteres e qqr elemento da tabela ascii"};
 	bool descritografa = 0;
-	std::cout << argc << "\n";
-	if(argc > 1)
-		descritografa = 1;
-	//std::getline(std::cin, senha);
-	//std::string s{"posso escrever algo assim?"};
+	std::string senha;
+	for (int i = 1; i < argc; i++) {
+        std::string arg(argv[i]);
+        if (arg == "-d") {
+			descritografa = 1;
+        } else if (arg == "-k") {
+            std::ifstream arquivo(argv[i+1]);
+			std::getline(arquivo, senha);
+			arquivo.close();
+		}
+	}
+	if (senha.size() == 0){
+		std::getline(std::cin , senha);
+	}
     Data dados; 
 	dados.gerarChave(senha);
 	
@@ -22,18 +31,22 @@ int main(int argc, char *argv[]) {
 			dados.mergeShuffle();
 			dados.imprimeSaida();
 		}
+		//std::cerr << "=============================================\n";
 		dados.mergeSort();
-		dados.mergeShuffle();
+		//dados.mergeShuffle(); // por algum motivo (dados de tamanhos diferentes) da erro na string final entao eu desativei 
 		dados.imprimeSaida();
 	}
 	else{
+		// ironicamente o reverse merge sort tem complexidade O(N) fazendo com que teoricamente seja mais facil descriptografar algo do que critografar
+		// o merge shuffle ainda eh O(n*log n)
 		//descriptografa
 		while (dados.recebeTexto()){
 			dados.mergeShuffle();
 			dados.reverseMergeSort(); // O coraçao de todo problema é o reverse merge sort
 			dados.imprimeSaida();
 		}
-		dados.mergeShuffle();
+		//std::cerr <<"=============================================\n";
+		//dados.mergeShuffle();	// idem o que ta escrito na ida e mo preguiça de tentar consertar
 		dados.reverseMergeSort(); // O coraçao de todo problema é o reverse merge sort
 		dados.imprimeSaida();
 	}
