@@ -31,8 +31,7 @@ int main(int argc, char *argv[]) {
 			dados.mergeShuffle();
 			dados.imprimeSaida();
 		}
-		dados.mergeShuffle();
-		//dados.mergeSort();
+		dados.mergeSort();
 		dados.imprimeSaida();
 	}
 	else{

@@ -1,1 +1,1 @@
-colocar a senha aqui, a senha podeter ate 256 caracteres e aceita todos os caracteres da tabela ascii, o programa mais ler ate o \n dessa primeira linha ou eof
+colocar a senha aqui, a senha podeter ate 512 caracteres e aceita todos os caracteres da tabela ascii, o programa mais ler ate o \n dessa primeira linha, resultados com EOF nao sao comprovados
