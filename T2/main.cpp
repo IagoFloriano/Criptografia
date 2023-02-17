@@ -27,27 +27,23 @@ int main(int argc, char *argv[]) {
 	//criptografa
 	if (!descritografa){
 		while (dados.recebeTexto()){
-			dados.mergeSort(); //o merge sort usou 100% de seu poder,mas nao foi capaz de lidar com o reversemergesort usando 0% do seu 
+			dados.mergeSort(); 											//o merge sort usou 100% de seu poder,mas nao foi capaz de lidar com o reversemergesort usando 0% do seu 
 			dados.mergeShuffle();
 			dados.imprimeSaida();
 		}
-		//std::cerr << "=============================================\n";
 		dados.mergeSort();
-		//dados.mergeShuffle(); // por algum motivo (dados de tamanhos diferentes) da erro na string final entao eu desativei 
 		dados.imprimeSaida();
 	}
 	else{
-		// ironicamente o reverse merge sort tem complexidade O(N) fazendo com que teoricamente seja mais facil descriptografar algo do que critografar
-		// o merge shuffle ainda eh O(n*log n)
+																		// ironicamente o reverse merge sort tem complexidade O(N) fazendo com que teoricamente seja mais facil descriptografar algo do que critografar
+																		// o merge shuffle ainda eh O(n*log n)
 		//descriptografa
 		while (dados.recebeTexto()){
 			dados.mergeShuffle();
-			dados.reverseMergeSort(); // O coraçao de todo problema é o reverse merge sort
+			dados.reverseMergeSort(); 																// O coraçao de todo problema é o reverse merge sort
 			dados.imprimeSaida();
 		}
-		//std::cerr <<"=============================================\n";
-		//dados.mergeShuffle();	// idem o que ta escrito na ida e mo preguiça de tentar consertar
-		dados.reverseMergeSort(); // O coraçao de todo problema é o reverse merge sort
+		dados.reverseMergeSort();																 // O coraçao de todo problema é o reverse merge sort
 		dados.imprimeSaida();
 	}
     return 0;

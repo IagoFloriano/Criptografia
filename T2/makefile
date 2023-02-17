@@ -1,6 +1,6 @@
 CC = g++ -g
 OBJS = main.o Data.o Mergesort.o
-EXE  = teste
+EXE  = msort
 
 CFLAGS = -Wall
 
@@ -22,5 +22,7 @@ clean:
 	@ rm -f $(EXE) $(OBJS)
 
 clear: clean
+
+purge:clean
 
 .PHONY: all clean
